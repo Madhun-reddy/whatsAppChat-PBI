@@ -1,0 +1,5 @@
+{
+  "objectId": "",
+  "type": 4,
+  "explorationState": "{\"version\":\"1.8\",\"activeSection\":\"\",\"sections\":{\"ReportSection\":{\"visualContainers\":{\"0ae8a5dd506ca3e18ebf\":{\"singleVisual\":{\"visualType\":\"actionButton\",\"mobileObjects\":{\"rotation\":[{\"properties\":{\"angle\":{\"expr\":{\"Literal\":{\"Value\":\"360L\"}}},\"shapeAngle\":{\"expr\":{\"Literal\":{\"Value\":\"360L\"}}},\"textAngle\":{\"expr\":{\"Literal\":{\"Value\":\"360L\"}}}}}]}}}}}}}"
+}
