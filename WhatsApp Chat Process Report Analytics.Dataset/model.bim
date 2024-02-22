@@ -4,11 +4,11 @@
     "annotations": [
       {
         "name": "PBIDesktopVersion",
-        "value": "2.123.742.0 (23.11)"
+        "value": "2.126.927.0 (24.02)"
       },
       {
         "name": "PBI_QueryOrder",
-        "value": "[\"WhatsApp Chat\",\"Calendar\",\"WhatsApp Chat (Editing2)\",\"HQ\",\"All_measures\",\"Day_Bucket\",\"WhatsApp Chat (Editing3)\",\"Query1\"]"
+        "value": "[\"WhatsApp Chat\",\"Calendar\",\"All_measures\",\"Day_Bucket\",\"HQ\",\"Holidays\",\"Query1\",\"Metadata\",\"fDataClean\"]"
       },
       {
         "name": "__PBI_TimeIntelligenceEnabled",
@@ -40,7 +40,31 @@
     "defaultPowerBIDataSourceVersion": "powerBI_V3",
     "expressions": [
       {
-        "name": "WhatsApp Chat (Editing2)",
+        "name": "Query1",
+        "annotations": [
+          {
+            "name": "PBI_NavigationStepName",
+            "value": "Navigation"
+          },
+          {
+            "name": "PBI_ResultType",
+            "value": "Function"
+          }
+        ],
+        "expression": [
+          "let",
+          "    Source = #shared,",
+          "    #\"Converted to Table\" = Record.ToTable(Source),",
+          "    #\"Filtered Rows\" = Table.SelectRows(#\"Converted to Table\", each ([Name] = \"Text.Contains\")),",
+          "    Value = #\"Filtered Rows\"{0}[Value]",
+          "in",
+          "    Value"
+        ],
+        "kind": "m",
+        "lineageTag": "59832140-37e5-4114-bb1f-2202dc94cb18"
+      },
+      {
+        "name": "Metadata",
         "annotations": [
           {
             "name": "PBI_NavigationStepName",
@@ -53,7 +77,7 @@
         ],
         "expression": [
           "let",
-          "    Source = Table.FromColumns({Lines.FromBinary(File.Contents(\"D:\\Maaah\\WhatsApp\\WhatsApp Chat with Maa Family.txt\"), null, null, 1252)}),",
+          "    Source = Table.FromColumns({Lines.FromBinary(File.Contents(\"E:\\DV CLASS\\POWER BI\\Projects\\WhatsApp Process Reporting Analytics\\Maa Family Chat\\WhatsApp Chat with Maa Family.txt\"), null, null, 1252)}),",
           "    #\"Split Column by Delimiter\" = Table.SplitColumn(Source, \"Column1\", Splitter.SplitTextByDelimiter(\": location:\", QuoteStyle.Csv), {\"Column1.1\", \"Column1.2\"}),",
           "    #\"Changed Type\" = Table.TransformColumnTypes(#\"Split Column by Delimiter\",{{\"Column1.1\", type text}, {\"Column1.2\", type text}}),",
           "    #\"Split Column by Delimiter1\" = Table.SplitColumn(#\"Changed Type\", \"Column1.1\", Splitter.SplitTextByEachDelimiter({\": \"}, QuoteStyle.Csv, true), {\"Column1.1.1\", \"Column1.1.2\"}),",
@@ -74,9 +98,9 @@
           "    #\"Trimmed Text\" = Table.TransformColumns(#\"Cleaned Text\",{{\"Column1.1.1.1.1.2\", Text.Trim, type text}}),",
           "    #\"Capitalized Each Word\" = Table.TransformColumns(#\"Trimmed Text\",{{\"Column1.1.1.1.1.2\", Text.Proper, type text}}),",
           "    #\"Replaced Value2\" = Table.ReplaceValue(#\"Capitalized Each Word\",\"Ma Devaraj: Name \",\"Ma Devaraj\",Replacer.ReplaceText,{\"Column1.1.1.2\"}),",
-          "    #\"Reordered Columns\" = Table.ReorderColumns(#\"Replaced Value2\",{\"Column1.1.1.1.1.1\", \"Column1.1.1.1.2\", \"Column1.1.1.1.1.2\", \"Column1.1.1.2\", \"Column1.1.2\", \"Column1.2\"}),",
-          "    ReplacedDinesh = Table.ReplaceValue(#\"Reordered Columns\",\"Madhu N ReddyðŸ˜ƒ\",\"Suresh\",Replacer.ReplaceText,{\"Column1.1.1.2\"}),",
-          "    RemovedMaInitials = Table.ReplaceValue(ReplacedDinesh,\"Ma \",\"\",Replacer.ReplaceText,{\"Column1.1.1.2\"}),",
+          "    #\"Reordered Columns\" = Table.ReorderColumns(#\"Replaced Value2\",{\"Column1.1.1.2\", \"Column1.1.1.1.1.2\", \"Column1.1.1.1.1.1\", \"Column1.1.1.1.2\",   \"Column1.1.2\", \"Column1.2\"}),",
+          "    ReplacedSuresh = Table.ReplaceValue(#\"Reordered Columns\",\"Madhu N ReddyðŸ˜ƒ\",\"Suresh\",Replacer.ReplaceText,{\"Column1.1.1.2\"}),",
+          "    RemovedMaInitials = Table.ReplaceValue(ReplacedSuresh,\"Ma \",\"\",Replacer.ReplaceText,{\"Column1.1.1.2\"}),",
           "    #\"Removed Columns\" = Table.RemoveColumns(RemovedMaInitials,{\"Column1.2\"}),",
           "    #\"Filled Down1\" = Table.FillDown(#\"Removed Columns\",{\"Column1.1.1.2\"}),",
           "    #\"Replaced Value5\" = Table.ReplaceValue(#\"Filled Down1\",\"\",null,Replacer.ReplaceValue,{\"Column1.1.1.2\"}),",
@@ -87,7 +111,7 @@
           "    #\"===DynamicCols====\" = #\"Reordered Columns1\",",
           "    Custom1 = Table.ColumnNames(#\"===DynamicCols====\"),",
           "    #\"Converted to Table\" = Table.FromList(Custom1, Splitter.SplitByNothing(), null, null, ExtraValues.Error),",
-          "    #\"Added Conditional Column\" = Table.AddColumn(#\"Converted to Table\", \"Custom\", each if [Column1] = \"Column1.1.1.1.1.1\" then \"Date\" else if [Column1] = \"Column1.1.1.1.2\" then \"Time\" else if [Column1] = \"Column1.1.1.2\" then \"SalesRep\" else if [Column1] = \"Column1.1.2\" then \"ReportType\" else if [Column1] = \"Column1.1.1.1.1.2\" then \"Calls\" else null, type text),",
+          "    #\"Added Conditional Column\" = Table.AddColumn(#\"Converted to Table\", \"Custom\", each if [Column1] = \"Column1.1.1.1.1.1\" then \"Date\" else if [Column1] = \"Column1.1.1.1.2\" then \"Time\" else if [Column1] = \"Column1.1.1.2\" then \"Representative\" else if [Column1] = \"Column1.1.2\" then \"ReportType\" else if [Column1] = \"Column1.1.1.1.1.2\" then \"Calls\" else null, type text),",
           "    #\"Transposed Table\" = Table.Transpose(#\"Added Conditional Column\"),",
           "    ColList = Table.ToColumns(#\"Transposed Table\"),",
           "    #\"===End==========\" = ColList,",
@@ -118,77 +142,35 @@
           "    #\"Replaced Value29\" = Table.ReplaceValue(#\"Replaced Value28\",\"Today plan\",\"TP\",Replacer.ReplaceText,{\"ReportType\"}),",
           "    #\"Replaced Value30\" = Table.ReplaceValue(#\"Replaced Value29\",\"Yesterday end of the day calls\",\"EODY\",Replacer.ReplaceText,{\"ReportType\"}),",
           "    #\"Replaced Value31\" = Table.ReplaceValue(#\"Replaced Value30\",\"Good morning sir today work\",\"TP\",Replacer.ReplaceText,{\"ReportType\"}),",
-          "    #\"Filled Down3\" = Table.FillDown(#\"Replaced Value31\",{\"Time\"}),",
+          "    #\"Filtered Rows\" = Table.SelectRows(#\"Replaced Value31\", each [Calls] <> \"4 Pg Drs\" and [Calls] <> \"Cells 6\"),",
+          "    #\"Filled Down3\" = Table.FillDown(#\"Filtered Rows\",{\"Time\"}),",
           "    #\"Uppercased Text\" = Table.TransformColumns(#\"Filled Down3\",{{\"ReportType\", Text.Upper, type text}}),",
           "    #\"Filtered Rows1\" = Table.SelectRows(#\"Uppercased Text\", each ([Calls] <> null)),",
           "    #\"Replaced Value34\" = Table.ReplaceValue(#\"Filtered Rows1\",\"YEOD\",\"EODY\",Replacer.ReplaceText,{\"ReportType\"}),",
-          "    #\"Grouped Rows\" = Table.Group(#\"Replaced Value34\", {\"Date\", \"Time\", \"SalesRep\", \"ReportType\"}, {{\"Count\", each _, type table [Date=nullable date, Time=nullable time, HQ=nullable text, Report=nullable text, Calls=text]}}),",
+          "    #\"Grouped Rows\" = Table.Group(#\"Replaced Value34\", {\"Date\", \"Time\", \"Representative\", \"ReportType\"}, {{\"Count\", each _, type table [Date=nullable date, Time=nullable time, HQ=nullable text, Report=nullable text, Calls=text]}}),",
           "    #\"Filtered Rows3\" = Table.SelectRows(#\"Grouped Rows\", each ([ReportType] = \"EOD\" or [ReportType] = \"EODY\" or [ReportType] = \"TP\")),",
-          "    #\"Filtered Rows\" = Table.SelectRows(#\"Filtered Rows3\", each Date.Month([Date]) = 6),",
-          "    #\"Sorted Rows\" = Table.Sort(#\"Filtered Rows\",{{\"ReportType\", Order.Ascending}, {\"Date\", Order.Ascending}}),",
+          "    #\"Sorted Rows\" = Table.Sort(#\"Filtered Rows3\",{{\"ReportType\", Order.Ascending}, {\"Date\", Order.Ascending}}),",
           "    #\"Expanded Count\" = Table.ExpandTableColumn(#\"Sorted Rows\", \"Count\", {\"Calls\"}, {\"Count.Calls\"}),",
           "    #\"Renamed Columns1\" = Table.RenameColumns(#\"Expanded Count\",{{\"Count.Calls\", \"Calls\"}}),",
-          "    #\"Replaced Value32\" = Table.ReplaceValue(#\"Renamed Columns1\",\"R.\",\"\",Replacer.ReplaceText,{\"Calls\"}),",
-          "    #\"Replaced Value33\" = Table.ReplaceValue(#\"Replaced Value32\",\"R \",\"\",Replacer.ReplaceText,{\"Calls\"}),",
-          "    #\"Filtered Rows4\" = Table.SelectRows(#\"Replaced Value33\", each ([Calls] <> null and [Calls] <> \"\") and ([SalesRep] <> \"Amith\")),",
-          "    #\"Trimmed Text2\" = Table.TransformColumns(#\"Filtered Rows4\",{{\"Calls\", Text.Trim, type text}}),",
-          "    #\"Merged Queries\" = Table.FuzzyNestedJoin(#\"Trimmed Text2\", {\"SalesRep\"}, HQ, {\"SalesRep\"}, \"HQ\", JoinKind.LeftOuter, [IgnoreCase=true, IgnoreSpace=true]),",
-          "    #\"Expanded HQ\" = Table.ExpandTableColumn(#\"Merged Queries\", \"HQ\", {\"HQ\", \"HqKey\", \"HqID\"}, {\"HQ\", \"HqKey\", \"HqID\"}),",
-          "    #\"Reordered Columns2\" = Table.ReorderColumns(#\"Expanded HQ\",{\"Date\", \"ReportType\", \"SalesRep\", \"HQ\", \"HqKey\", \"HqID\", \"Time\", \"Calls\"})",
+          "    #\"Replaced Value32\" = Table.ReplaceValue(#\"Renamed Columns1\",\"R. \",\"R \",Replacer.ReplaceText,{\"Calls\"}),",
+          "    #\"Filtered Rows4\" = Table.SelectRows(#\"Replaced Value32\", each ([Calls] <> null and [Calls] <> \"\") and ([Representative] <> \"Amith\")),",
+          "    #\"Replaced Value33\" = Table.ReplaceValue(#\"Filtered Rows4\",\"R.\",\"R \",Replacer.ReplaceText,{\"Calls\"}),",
+          "    #\"Trimmed Text2\" = Table.TransformColumns(#\"Replaced Value33\",{{\"Calls\", Text.Trim, type text}}),",
+          "    #\"Replaced Value3\" = Table.ReplaceValue(#\"Trimmed Text2\",\"R \",\"Dr \",Replacer.ReplaceText,{\"Calls\"}),",
+          "    #\"Filtered Rows5\" = Table.SelectRows(#\"Replaced Value3\", each not Text.Contains([Calls], \"Rem\")),",
+          "    #\"HQ Merged\" = Table.FuzzyNestedJoin(#\"Filtered Rows5\", {\"Representative\"}, HQ, {\"Representative\"}, \"HQ\", JoinKind.LeftOuter, [IgnoreCase=true, IgnoreSpace=true]),",
+          "    #\"Expanded HQ\" = Table.ExpandTableColumn(#\"HQ Merged\", \"HQ\", {\"HqKey\"}, {\"HqKey\"}),",
+          "    #\"Reordered Columns2\" = Table.ReorderColumns(#\"Expanded HQ\",{\"ReportType\", \"HqKey\", \"Representative\", \"Date\", \"Time\", \"Calls\"}),",
+          "    #\"Filtered Rows2\" = Table.SelectRows(#\"Reordered Columns2\", each [Calls] <> \"\")",
           "in",
-          "    #\"Reordered Columns2\""
+          "    #\"Filtered Rows2\""
         ],
         "kind": "m",
-        "lineageTag": "aed5c9ce-17eb-4458-b56f-95b8e7c8c8c8"
+        "lineageTag": "5f9798a3-2df8-4202-94ad-75d9b408dd2d",
+        "queryGroup": "fDataClean"
       },
       {
-        "name": "WhatsApp Chat (Editing3)",
-        "annotations": [
-          {
-            "name": "PBI_NavigationStepName",
-            "value": "Navigation"
-          },
-          {
-            "name": "PBI_ResultType",
-            "value": "Table"
-          }
-        ],
-        "expression": [
-          "let",
-          "    Source = Table.FromColumns({Lines.FromBinary(File.Contents(\"D:\\Maaah\\WhatsApp\\WhatsApp Chat with Maa Family.txt\"), null, null, 1252)}),",
-          "    #\"Split Column by Delimiter\" = Table.SplitColumn(Source, \"Column1\", Splitter.SplitTextByDelimiter(\": location:\", QuoteStyle.Csv), {\"Column1.1\", \"Column1.2\"}),",
-          "    #\"Split Column by Delimiter1\" = Table.SplitColumn(#\"Split Column by Delimiter\", \"Column1.1\", Splitter.SplitTextByEachDelimiter({\": \"}, QuoteStyle.Csv, true), {\"Column1.1.1\", \"Column1.1.2\"}),",
-          "    #\"Split Column by Delimiter2\" = Table.SplitColumn(#\"Split Column by Delimiter1\", \"Column1.1.1\", Splitter.SplitTextByDelimiter(\" - \", QuoteStyle.Csv), {\"Column1.1.1.1\", \"Column1.1.1.2\"}),",
-          "    #\"Split Column by Delimiter3\" = Table.SplitColumn(#\"Split Column by Delimiter2\", \"Column1.1.1.1\", Splitter.SplitTextByEachDelimiter({\", \"}, QuoteStyle.Csv, false), {\"Column1.1.1.1.1\", \"Column1.1.1.1.2\"}),",
-          "    #\"Replaced Errors\" = Table.ReplaceErrorValues(#\"Split Column by Delimiter3\", {{\"Column1.1.1.1.2\", null}}),",
-          "    #\"Replaced Value\" = Table.ReplaceValue(#\"Replaced Errors\",\"Madhu N ReddyðŸ˜ƒ\",\"Ma Suresh\",Replacer.ReplaceText,{\"Column1.1.1.2\"}),",
-          "    #\"Added Conditional Column\" = Table.AddColumn(#\"Replaced Value\", \"Date\", each if Text.Contains([Column1.1.1.1.1], \"/\") then [Column1.1.1.1.1] else null),",
-          "    #\"Changed Type\" = Table.TransformColumnTypes(#\"Added Conditional Column\",{{\"Date\", type date}}),",
-          "    #\"Replaced Errors1\" = Table.ReplaceErrorValues(#\"Changed Type\", {{\"Date\", null}}),",
-          "    #\"Split Column by Delimiter4\" = Table.SplitColumn(#\"Replaced Errors1\", \"Column1.1.1.1.1\", Splitter.SplitTextByDelimiter(\"G1/G2\", QuoteStyle.Csv), {\"Column1.1.1.1.1.1\", \"Column1.1.1.1.1.2\"}),",
-          "    #\"Added Conditional Column1\" = Table.AddColumn(#\"Split Column by Delimiter4\", \"Custom\", each if Text.Contains([Column1.1.1.1.1.1], \"/\") then null else [Column1.1.1.1.1.1]),",
-          "    #\"Merged Columns\" = Table.CombineColumns(#\"Added Conditional Column1\",{\"Column1.1.2\", \"Custom\"},Combiner.CombineTextByDelimiter(\"\", QuoteStyle.None),\"Calls\"),",
-          "    #\"Removed Other Columns\" = Table.SelectColumns(#\"Merged Columns\",{\"Date\", \"Column1.1.1.1.2\", \"Column1.1.1.2\", \"Calls\"}),",
-          "    #\"Filled Down\" = Table.FillDown(#\"Removed Other Columns\",{\"Date\", \"Column1.1.1.1.2\", \"Column1.1.1.2\"}),",
-          "    #\"FilteredCalls<>Blank\" = Table.SelectRows(#\"Filled Down\", each ([Calls] <> \"\")),",
-          "    #\"Sorted Rows\" = Table.Sort(#\"FilteredCalls<>Blank\",{{\"Date\", Order.Ascending}, {\"Column1.1.1.2\", Order.Ascending}, {\"Column1.1.1.1.2\", Order.Ascending}}),",
-          "    DateFiltered2022Jan = Table.SelectRows(#\"Sorted Rows\", each [Date] >= #date(2022, 1, 1)),",
-          "    #\"Lowercased Text\" = Table.TransformColumns(DateFiltered2022Jan,{{\"Calls\", Text.Lower, type text}}),",
-          "    #\"Trimmed Text\" = Table.TransformColumns(#\"Lowercased Text\",{{\"Calls\", Text.Trim, type text}}),",
-          "    #\"Added Conditional Column2\" = Table.AddColumn(#\"Trimmed Text\", \"MetCalls\", each if Text.Contains([Calls], \"met\") then [Calls] else null),",
-          "    #\"Added Conditional Column3\" = Table.AddColumn(#\"Added Conditional Column2\", \"EODCalls\", each if Text.Contains([Calls], \"end \") then [Calls] else if Text.Contains([Calls], \"eod\") then [Calls] else null),",
-          "    #\"Filled Down1\" = Table.FillDown(#\"Added Conditional Column3\",{\"EODCalls\"}),",
-          "    #\"Filled Up\" = Table.FillUp(#\"Filled Down1\",{\"MetCalls\"}),",
-          "    #\"Filtered Rows1\" = Table.SelectRows(#\"Filled Up\", each ([MetCalls] <> \"chemist met 5\" and [MetCalls] <> \"chemist met 7\" and [MetCalls] <> \"chemist met 8\" and [MetCalls] <> \"i got pob metmaa 20 strips from maruthi pharma koramangala.\" and [MetCalls] <> \"metmaa\")),",
-          "    #\"Filtered Rows\" = Table.SelectRows(#\"Filtered Rows1\", each not Text.Contains([Calls], \"met\"))",
-          "in",
-          "    #\"Filtered Rows\""
-        ],
-        "kind": "m",
-        "lineageTag": "4244f8da-2dd8-401e-b413-0543a477fd64"
-      },
-      {
-        "name": "Query1",
+        "name": "fDataClean",
         "annotations": [
           {
             "name": "PBI_NavigationStepName",
@@ -201,15 +183,111 @@
         ],
         "expression": [
           "let",
-          "    Source = #shared,",
-          "    #\"Converted to Table\" = Record.ToTable(Source),",
-          "    #\"Filtered Rows\" = Table.SelectRows(#\"Converted to Table\", each ([Name] = \"Text.Contains\")),",
-          "    Value = #\"Filtered Rows\"{0}[Value]",
+          "    Source = () => let",
+          "    Source = Table.FromColumns({Lines.FromBinary(File.Contents(\"E:\\DV CLASS\\POWER BI\\Projects\\WhatsApp Process Reporting Analytics\\Maa Family Chat\\WhatsApp Chat with Maa Family.txt\"), null, null, 1252)}),",
+          "    #\"Split Column by Delimiter\" = Table.SplitColumn(Source, \"Column1\", Splitter.SplitTextByDelimiter(\": location:\", QuoteStyle.Csv), {\"Column1.1\", \"Column1.2\"}),",
+          "    #\"Changed Type\" = Table.TransformColumnTypes(#\"Split Column by Delimiter\",{{\"Column1.1\", type text}, {\"Column1.2\", type text}}),",
+          "    #\"Split Column by Delimiter1\" = Table.SplitColumn(#\"Changed Type\", \"Column1.1\", Splitter.SplitTextByEachDelimiter({\": \"}, QuoteStyle.Csv, true), {\"Column1.1.1\", \"Column1.1.2\"}),",
+          "    #\"Changed Type1\" = Table.TransformColumnTypes(#\"Split Column by Delimiter1\",{{\"Column1.1.1\", type text}, {\"Column1.1.2\", type text}}),",
+          "    #\"Split Column by Delimiter2\" = Table.SplitColumn(#\"Changed Type1\", \"Column1.1.1\", Splitter.SplitTextByDelimiter(\" - \", QuoteStyle.Csv), {\"Column1.1.1.1\", \"Column1.1.1.2\"}),",
+          "    #\"Changed Type2\" = Table.TransformColumnTypes(#\"Split Column by Delimiter2\",{{\"Column1.1.1.1\", type text}, {\"Column1.1.1.2\", type text}}),",
+          "    #\"Split Column by Delimiter3\" = Table.SplitColumn(#\"Changed Type2\", \"Column1.1.1.1\", Splitter.SplitTextByEachDelimiter({\", \"}, QuoteStyle.Csv, false), {\"Column1.1.1.1.1\", \"Column1.1.1.1.2\"}),",
+          "    #\"Changed Type3\" = Table.TransformColumnTypes(#\"Split Column by Delimiter3\",{{\"Column1.1.1.1.1\", type text}, {\"Column1.1.1.1.2\", type time}}),",
+          "    #\"Replaced Errors\" = Table.ReplaceErrorValues(#\"Changed Type3\", {{\"Column1.1.1.1.2\", null}}),",
+          "    #\"Split Column by Delimiter4\" = Table.SplitColumn(#\"Replaced Errors\", \"Column1.1.1.1.1\", Splitter.SplitTextByEachDelimiter({\"D\"}, QuoteStyle.Csv, false), {\"Column1.1.1.1.1.1\", \"Column1.1.1.1.1.2\"}),",
+          "    #\"Changed Type4\" = Table.TransformColumnTypes(#\"Split Column by Delimiter4\",{{\"Column1.1.1.1.1.1\", type text}, {\"Column1.1.1.1.1.2\", type text}}),",
+          "    #\"Changed Type5\" = Table.TransformColumnTypes(#\"Changed Type4\",{{\"Column1.1.1.1.1.1\", type date}}),",
+          "    #\"Replaced Value\" = Table.ReplaceValue(#\"Changed Type5\",\"\",null,Replacer.ReplaceValue,{\"Column1.1.1.1.1.1\"}),",
+          "    #\"Replaced Errors1\" = Table.ReplaceErrorValues(#\"Replaced Value\", {{\"Column1.1.1.1.1.1\", null}}),",
+          "    #\"Filled Down\" = Table.FillDown(#\"Replaced Errors1\",{\"Column1.1.1.1.1.1\"}),",
+          "    #\"Replaced Value1\" = Table.ReplaceValue(#\"Filled Down\",\"\",null,Replacer.ReplaceValue,{\"Column1.1.1.1.1.2\"}),",
+          "    #\"Cleaned Text\" = Table.TransformColumns(#\"Replaced Value1\",{{\"Column1.1.1.1.1.2\", Text.Clean, type text}}),",
+          "    #\"Trimmed Text\" = Table.TransformColumns(#\"Cleaned Text\",{{\"Column1.1.1.1.1.2\", Text.Trim, type text}}),",
+          "    #\"Capitalized Each Word\" = Table.TransformColumns(#\"Trimmed Text\",{{\"Column1.1.1.1.1.2\", Text.Proper, type text}}),",
+          "    #\"Replaced Value2\" = Table.ReplaceValue(#\"Capitalized Each Word\",\"Ma Devaraj: Name \",\"Ma Devaraj\",Replacer.ReplaceText,{\"Column1.1.1.2\"}),",
+          "    #\"Reordered Columns\" = Table.ReorderColumns(#\"Replaced Value2\",{\"Column1.1.1.2\", \"Column1.1.1.1.1.2\", \"Column1.1.1.1.1.1\", \"Column1.1.1.1.2\",   \"Column1.1.2\", \"Column1.2\"}),",
+          "    ReplacedSuresh = Table.ReplaceValue(#\"Reordered Columns\",\"Madhu N ReddyðŸ˜ƒ\",\"Suresh\",Replacer.ReplaceText,{\"Column1.1.1.2\"}),",
+          "    RemovedMaInitials = Table.ReplaceValue(ReplacedSuresh,\"Ma \",\"\",Replacer.ReplaceText,{\"Column1.1.1.2\"}),",
+          "    #\"Removed Columns\" = Table.RemoveColumns(RemovedMaInitials,{\"Column1.2\"}),",
+          "    #\"Filled Down1\" = Table.FillDown(#\"Removed Columns\",{\"Column1.1.1.2\"}),",
+          "    #\"Replaced Value5\" = Table.ReplaceValue(#\"Filled Down1\",\"\",null,Replacer.ReplaceValue,{\"Column1.1.1.2\"}),",
+          "    #\"Trimmed Text1\" = Table.TransformColumns(#\"Replaced Value5\",{{\"Column1.1.2\", Text.Trim, type text}}),",
+          "    #\"Cleaned Text1\" = Table.TransformColumns(#\"Trimmed Text1\",{{\"Column1.1.2\", Text.Clean, type text}}),",
+          "    #\"Filled Down2\" = Table.FillDown(#\"Cleaned Text1\",{\"Column1.1.2\"}),",
+          "    #\"Reordered Columns1\" = Table.ReorderColumns(#\"Filled Down2\",{\"Column1.1.1.1.1.1\", \"Column1.1.1.1.2\", \"Column1.1.1.2\", \"Column1.1.2\", \"Column1.1.1.1.1.2\"}),",
+          "    #\"===DynamicCols====\" = #\"Reordered Columns1\",",
+          "    Custom1 = Table.ColumnNames(#\"===DynamicCols====\"),",
+          "    #\"Converted to Table\" = Table.FromList(Custom1, Splitter.SplitByNothing(), null, null, ExtraValues.Error),",
+          "    #\"Added Conditional Column\" = Table.AddColumn(#\"Converted to Table\", \"Custom\", each if [Column1] = \"Column1.1.1.1.1.1\" then \"Date\" else if [Column1] = \"Column1.1.1.1.2\" then \"Time\" else if [Column1] = \"Column1.1.1.2\" then \"Representative\" else if [Column1] = \"Column1.1.2\" then \"ReportType\" else if [Column1] = \"Column1.1.1.1.1.2\" then \"Calls\" else null, type text),",
+          "    #\"Transposed Table\" = Table.Transpose(#\"Added Conditional Column\"),",
+          "    ColList = Table.ToColumns(#\"Transposed Table\"),",
+          "    #\"===End==========\" = ColList,",
+          "    RenamedColumns = Table.RenameColumns(#\"===DynamicCols====\",#\"===End==========\"),",
+          "    #\"Replaced Value6\" = Table.ReplaceValue(RenamedColumns,\"End of the day calls\",\"EOD\",Replacer.ReplaceText,{\"ReportType\"}),",
+          "    #\"Replaced Value7\" = Table.ReplaceValue(#\"Replaced Value6\",\"Day end calls\",\"EOD\",Replacer.ReplaceText,{\"ReportType\"}),",
+          "    #\"Replaced Value8\" = Table.ReplaceValue(#\"Replaced Value7\",\"End of the calls\",\"EOD\",Replacer.ReplaceText,{\"ReportType\"}),",
+          "    #\"Replaced Value9\" = Table.ReplaceValue(#\"Replaced Value8\",\"Yesterdays day end calls\",\"EODY\",Replacer.ReplaceText,{\"ReportType\"}),",
+          "    #\"Replaced Value10\" = Table.ReplaceValue(#\"Replaced Value9\",\"Eod cals\",\"EOD\",Replacer.ReplaceText,{\"ReportType\"}),",
+          "    #\"Replaced Value11\" = Table.ReplaceValue(#\"Replaced Value10\",\"Eod calls\",\"EOD\",Replacer.ReplaceText,{\"ReportType\"}),",
+          "    #\"Replaced Value12\" = Table.ReplaceValue(#\"Replaced Value11\",\"EOD calls\",\"EOD\",Replacer.ReplaceText,{\"ReportType\"}),",
+          "    #\"Replaced Value13\" = Table.ReplaceValue(#\"Replaced Value12\",\"EOD Calls\",\"EOD\",Replacer.ReplaceText,{\"ReportType\"}),",
+          "    #\"Replaced Value14\" = Table.ReplaceValue(#\"Replaced Value13\",\"Yesterday's EOD\",\"EODY\",Replacer.ReplaceText,{\"ReportType\"}),",
+          "    #\"Replaced Value15\" = Table.ReplaceValue(#\"Replaced Value14\",\"Today's plan\",\"TP\",Replacer.ReplaceText,{\"ReportType\"}),",
+          "    #\"Replaced Value16\" = Table.ReplaceValue(#\"Replaced Value15\",\"Good morning sir Today work plan\",\"TP\",Replacer.ReplaceText,{\"ReportType\"}),",
+          "    #\"Replaced Value17\" = Table.ReplaceValue(#\"Replaced Value16\",\"Today work plan is\",\"TP\",Replacer.ReplaceText,{\"ReportType\"}),",
+          "    #\"Replaced Value18\" = Table.ReplaceValue(#\"Replaced Value17\",\"Todays plan\",\"TP\",Replacer.ReplaceText,{\"ReportType\"}),",
+          "    #\"Replaced Value19\" = Table.ReplaceValue(#\"Replaced Value18\",\"Good morning sir today work plan\",\"TP\",Replacer.ReplaceText,{\"ReportType\"}),",
+          "    #\"Replaced Value20\" = Table.ReplaceValue(#\"Replaced Value19\",\"Today work plan\",\"TP\",Replacer.ReplaceText,{\"ReportType\"}),",
+          "    #\"Replaced Value21\" = Table.ReplaceValue(#\"Replaced Value20\",\"Good morning today work plan\",\"TP\",Replacer.ReplaceText,{\"ReportType\"}),",
+          "    #\"Replaced Value22\" = Table.ReplaceValue(#\"Replaced Value21\",\"today work plan\",\"TP\",Replacer.ReplaceText,{\"ReportType\"}),",
+          "    #\"Replaced Value23\" = Table.ReplaceValue(#\"Replaced Value22\",\"Today's calls\",\"TP\",Replacer.ReplaceText,{\"ReportType\"}),",
+          "    #\"Replaced Value24\" = Table.ReplaceValue(#\"Replaced Value23\",\"EOD with Govinda\",\"EOD\",Replacer.ReplaceText,{\"ReportType\"}),",
+          "    #\"Replaced Value25\" = Table.ReplaceValue(#\"Replaced Value24\",\"EOD call\",\"EOD\",Replacer.ReplaceText,{\"ReportType\"}),",
+          "    #\"Replaced Value26\" = Table.ReplaceValue(#\"Replaced Value25\",\"End if the day calls\",\"EOD\",Replacer.ReplaceText,{\"ReportType\"}),",
+          "    #\"Replaced Value27\" = Table.ReplaceValue(#\"Replaced Value26\",\"Good evening EOD\",\"EOD\",Replacer.ReplaceText,{\"ReportType\"}),",
+          "    #\"Replaced Value28\" = Table.ReplaceValue(#\"Replaced Value27\",\"Day end plan\",\"EOD\",Replacer.ReplaceText,{\"ReportType\"}),",
+          "    #\"Replaced Value29\" = Table.ReplaceValue(#\"Replaced Value28\",\"Today plan\",\"TP\",Replacer.ReplaceText,{\"ReportType\"}),",
+          "    #\"Replaced Value30\" = Table.ReplaceValue(#\"Replaced Value29\",\"Yesterday end of the day calls\",\"EODY\",Replacer.ReplaceText,{\"ReportType\"}),",
+          "    #\"Replaced Value31\" = Table.ReplaceValue(#\"Replaced Value30\",\"Good morning sir today work\",\"TP\",Replacer.ReplaceText,{\"ReportType\"}),",
+          "    #\"Filtered Rows\" = Table.SelectRows(#\"Replaced Value31\", each [Calls] <> \"4 Pg Drs\" and [Calls] <> \"Cells 6\"),",
+          "    #\"Filled Down3\" = Table.FillDown(#\"Filtered Rows\",{\"Time\"}),",
+          "    #\"Uppercased Text\" = Table.TransformColumns(#\"Filled Down3\",{{\"ReportType\", Text.Upper, type text}}),",
+          "    #\"Filtered Rows1\" = Table.SelectRows(#\"Uppercased Text\", each ([Calls] <> null)),",
+          "    #\"Replaced Value34\" = Table.ReplaceValue(#\"Filtered Rows1\",\"YEOD\",\"EODY\",Replacer.ReplaceText,{\"ReportType\"}),",
+          "    #\"Grouped Rows\" = Table.Group(#\"Replaced Value34\", {\"Date\", \"Time\", \"Representative\", \"ReportType\"}, {{\"Count\", each _, type table [Date=nullable date, Time=nullable time, HQ=nullable text, Report=nullable text, Calls=text]}}),",
+          "    #\"Filtered Rows3\" = Table.SelectRows(#\"Grouped Rows\", each ([ReportType] = \"EOD\" or [ReportType] = \"EODY\" or [ReportType] = \"TP\")),",
+          "    #\"Sorted Rows\" = Table.Sort(#\"Filtered Rows3\",{{\"ReportType\", Order.Ascending}, {\"Date\", Order.Ascending}}),",
+          "    #\"Expanded Count\" = Table.ExpandTableColumn(#\"Sorted Rows\", \"Count\", {\"Calls\"}, {\"Count.Calls\"}),",
+          "    #\"Renamed Columns1\" = Table.RenameColumns(#\"Expanded Count\",{{\"Count.Calls\", \"Calls\"}}),",
+          "    #\"Replaced Value32\" = Table.ReplaceValue(#\"Renamed Columns1\",\"R. \",\"R \",Replacer.ReplaceText,{\"Calls\"}),",
+          "    #\"Filtered Rows4\" = Table.SelectRows(#\"Replaced Value32\", each ([Calls] <> null and [Calls] <> \"\") and ([Representative] <> \"Amith\")),",
+          "        #\"Replaced Value33\" = Table.ReplaceValue(#\"Filtered Rows4\",\"R.\",\"R \",Replacer.ReplaceText,{\"Calls\"}),",
+          "    #\"Trimmed Text2\" = Table.TransformColumns(#\"Replaced Value33\",{{\"Calls\", Text.Trim, type text}}),",
+          "        #\"Replaced Value3\" = Table.ReplaceValue(#\"Trimmed Text2\",\"R \",\"Dr \",Replacer.ReplaceText,{\"Calls\"}),",
+          "        #\"Filtered Rows5\" = Table.SelectRows(#\"Replaced Value3\", each not Text.Contains([Calls], \"Rem\")),",
+          "        #\"HQ Merged\" = Table.FuzzyNestedJoin(#\"Filtered Rows5\", {\"Representative\"}, HQ, {\"Representative\"}, \"HQ\", JoinKind.LeftOuter, [IgnoreCase=true, IgnoreSpace=true]),",
+          "    #\"Expanded HQ\" = Table.ExpandTableColumn(#\"HQ Merged\", \"HQ\", {\"HqKey\"}, {\"HqKey\"}),",
+          "    #\"Reordered Columns2\" = Table.ReorderColumns(#\"Expanded HQ\",{\"ReportType\", \"HqKey\", \"Representative\", \"Date\", \"Time\", \"Calls\"}),",
+          "    #\"Filtered Rows2\" = Table.SelectRows(#\"Reordered Columns2\", each [Calls] <> \"\")",
+          "    in",
+          "        #\"Filtered Rows2\"",
           "in",
-          "    Value"
+          "    Source"
         ],
         "kind": "m",
-        "lineageTag": "59832140-37e5-4114-bb1f-2202dc94cb18"
+        "lineageTag": "c0d34c8f-68a8-47cf-a65f-cd712c26a1f0",
+        "queryGroup": "fDataClean"
+      }
+    ],
+    "queryGroups": [
+      {
+        "annotations": [
+          {
+            "name": "PBI_QueryGroupOrder",
+            "value": "0"
+          }
+        ],
+        "folder": "fDataClean"
       }
     ],
     "relationships": [
@@ -230,18 +308,27 @@
         "toTable": "LocalDateTable_99174f75-cabe-4d7b-b52b-6a8470ba1688"
       },
       {
-        "name": "1de2c171-663e-422e-94bc-f27d0707f7f1",
-        "fromColumn": "Date",
+        "name": "a350648f-6173-4c39-8fe8-ffb4812ffba1",
+        "fromColumn": "HqKey",
         "fromTable": "WhatsApp Chat",
+        "toColumn": "HqKey",
+        "toTable": "HQ"
+      },
+      {
+        "name": "412221d5-d86a-4700-a990-8cd8e552f290",
+        "crossFilteringBehavior": "bothDirections",
+        "fromCardinality": "one",
+        "fromColumn": "Date",
+        "fromTable": "Holidays",
         "toColumn": "Date",
         "toTable": "Calendar"
       },
       {
-        "name": "a2321cea-e58d-47ec-b886-713c48454431",
-        "fromColumn": "HQ",
+        "name": "881f8d9c-c21d-4601-844b-10aa71b4c338",
+        "fromColumn": "Date",
         "fromTable": "WhatsApp Chat",
-        "toColumn": "HQ",
-        "toTable": "HQ"
+        "toColumn": "Date",
+        "toTable": "Calendar"
       }
     ],
     "sourceQueryCulture": "en-IN",
@@ -454,241 +541,6 @@
             "source": {
               "expression": "Calendar(Date(2015,1,1), Date(2015,1,1))",
               "type": "calculated"
-            }
-          }
-        ]
-      },
-      {
-        "name": "WhatsApp Chat",
-        "annotations": [
-          {
-            "name": "PBI_NavigationStepName",
-            "value": "Navigation"
-          },
-          {
-            "name": "PBI_ResultType",
-            "value": "Table"
-          }
-        ],
-        "columns": [
-          {
-            "name": "Calls",
-            "annotations": [
-              {
-                "name": "SummarizationSetBy",
-                "value": "Automatic"
-              }
-            ],
-            "dataType": "string",
-            "lineageTag": "c0997200-72fa-4729-aacc-ed6d8c4dc54f",
-            "sourceColumn": "Calls",
-            "summarizeBy": "none"
-          },
-          {
-            "name": "Date",
-            "annotations": [
-              {
-                "name": "SummarizationSetBy",
-                "value": "Automatic"
-              },
-              {
-                "name": "UnderlyingDateTimeDataType",
-                "value": "Date"
-              }
-            ],
-            "dataType": "dateTime",
-            "formatString": "Long Date",
-            "lineageTag": "7181cc32-143f-4e3d-9ff7-559114e2fd5c",
-            "sourceColumn": "Date",
-            "summarizeBy": "none"
-          },
-          {
-            "name": "ReportType",
-            "annotations": [
-              {
-                "name": "SummarizationSetBy",
-                "value": "Automatic"
-              }
-            ],
-            "dataType": "string",
-            "lineageTag": "795ddf3b-f082-49c3-9054-6828ef10ead5",
-            "sourceColumn": "ReportType",
-            "summarizeBy": "none"
-          },
-          {
-            "name": "SalesRep",
-            "annotations": [
-              {
-                "name": "SummarizationSetBy",
-                "value": "Automatic"
-              }
-            ],
-            "dataType": "string",
-            "lineageTag": "5dfdc5f2-59af-488b-b7db-dafc92176170",
-            "sourceColumn": "SalesRep",
-            "summarizeBy": "none"
-          },
-          {
-            "name": "HQ",
-            "annotations": [
-              {
-                "name": "SummarizationSetBy",
-                "value": "Automatic"
-              }
-            ],
-            "dataType": "string",
-            "lineageTag": "fcb2bf6b-692c-4add-9c16-28d6dcb3568c",
-            "sourceColumn": "HQ",
-            "summarizeBy": "none"
-          },
-          {
-            "name": "HqKey",
-            "annotations": [
-              {
-                "name": "SummarizationSetBy",
-                "value": "Automatic"
-              }
-            ],
-            "dataType": "int64",
-            "formatString": "0",
-            "lineageTag": "3aac6724-c206-42ae-ae5a-565ccb0a2821",
-            "sourceColumn": "HqKey",
-            "summarizeBy": "count"
-          },
-          {
-            "name": "HqID",
-            "annotations": [
-              {
-                "name": "SummarizationSetBy",
-                "value": "Automatic"
-              }
-            ],
-            "dataType": "string",
-            "lineageTag": "f061ea0d-8222-41ad-ba50-c77436d0414d",
-            "sourceColumn": "HqID",
-            "summarizeBy": "none"
-          },
-          {
-            "name": "Time",
-            "annotations": [
-              {
-                "name": "SummarizationSetBy",
-                "value": "Automatic"
-              },
-              {
-                "name": "UnderlyingDateTimeDataType",
-                "value": "Time"
-              }
-            ],
-            "dataType": "dateTime",
-            "formatString": "Long Time",
-            "lineageTag": "77bc66f8-1404-440d-80a7-10c71662f0bc",
-            "sourceColumn": "Time",
-            "summarizeBy": "none"
-          }
-        ],
-        "lineageTag": "e55a82a7-40a0-4fa6-8c73-7ab350476f88",
-        "measures": [
-          {
-            "name": "FW Days",
-            "expression": "DISTINCTCOUNT('WhatsApp Chat'[Date])",
-            "formatString": "0",
-            "lineageTag": "d5800b94-664a-4bd6-99f7-a39fd78789c9"
-          }
-        ],
-        "partitions": [
-          {
-            "name": "WhatsApp Chat-6646b416-6166-4b57-999c-c90a47bd8b7c",
-            "mode": "import",
-            "source": {
-              "expression": [
-                "let",
-                "    Source = Table.FromColumns({Lines.FromBinary(File.Contents(\"D:\\Maaah\\WhatsApp\\WhatsApp Chat with Maa Family.txt\"), null, null, 1252)}),",
-                "    #\"Split Column by Delimiter\" = Table.SplitColumn(Source, \"Column1\", Splitter.SplitTextByDelimiter(\": location:\", QuoteStyle.Csv), {\"Column1.1\", \"Column1.2\"}),",
-                "    #\"Changed Type\" = Table.TransformColumnTypes(#\"Split Column by Delimiter\",{{\"Column1.1\", type text}, {\"Column1.2\", type text}}),",
-                "    #\"Split Column by Delimiter1\" = Table.SplitColumn(#\"Changed Type\", \"Column1.1\", Splitter.SplitTextByEachDelimiter({\": \"}, QuoteStyle.Csv, true), {\"Column1.1.1\", \"Column1.1.2\"}),",
-                "    #\"Changed Type1\" = Table.TransformColumnTypes(#\"Split Column by Delimiter1\",{{\"Column1.1.1\", type text}, {\"Column1.1.2\", type text}}),",
-                "    #\"Split Column by Delimiter2\" = Table.SplitColumn(#\"Changed Type1\", \"Column1.1.1\", Splitter.SplitTextByDelimiter(\" - \", QuoteStyle.Csv), {\"Column1.1.1.1\", \"Column1.1.1.2\"}),",
-                "    #\"Changed Type2\" = Table.TransformColumnTypes(#\"Split Column by Delimiter2\",{{\"Column1.1.1.1\", type text}, {\"Column1.1.1.2\", type text}}),",
-                "    #\"Split Column by Delimiter3\" = Table.SplitColumn(#\"Changed Type2\", \"Column1.1.1.1\", Splitter.SplitTextByEachDelimiter({\", \"}, QuoteStyle.Csv, false), {\"Column1.1.1.1.1\", \"Column1.1.1.1.2\"}),",
-                "    #\"Changed Type3\" = Table.TransformColumnTypes(#\"Split Column by Delimiter3\",{{\"Column1.1.1.1.1\", type text}, {\"Column1.1.1.1.2\", type time}}),",
-                "    #\"Replaced Errors\" = Table.ReplaceErrorValues(#\"Changed Type3\", {{\"Column1.1.1.1.2\", null}}),",
-                "    #\"Split Column by Delimiter4\" = Table.SplitColumn(#\"Replaced Errors\", \"Column1.1.1.1.1\", Splitter.SplitTextByEachDelimiter({\"D\"}, QuoteStyle.Csv, false), {\"Column1.1.1.1.1.1\", \"Column1.1.1.1.1.2\"}),",
-                "    #\"Changed Type4\" = Table.TransformColumnTypes(#\"Split Column by Delimiter4\",{{\"Column1.1.1.1.1.1\", type text}, {\"Column1.1.1.1.1.2\", type text}}),",
-                "    #\"Changed Type5\" = Table.TransformColumnTypes(#\"Changed Type4\",{{\"Column1.1.1.1.1.1\", type date}}),",
-                "    #\"Replaced Value\" = Table.ReplaceValue(#\"Changed Type5\",\"\",null,Replacer.ReplaceValue,{\"Column1.1.1.1.1.1\"}),",
-                "    #\"Replaced Errors1\" = Table.ReplaceErrorValues(#\"Replaced Value\", {{\"Column1.1.1.1.1.1\", null}}),",
-                "    #\"Filled Down\" = Table.FillDown(#\"Replaced Errors1\",{\"Column1.1.1.1.1.1\"}),",
-                "    #\"Replaced Value1\" = Table.ReplaceValue(#\"Filled Down\",\"\",null,Replacer.ReplaceValue,{\"Column1.1.1.1.1.2\"}),",
-                "    #\"Cleaned Text\" = Table.TransformColumns(#\"Replaced Value1\",{{\"Column1.1.1.1.1.2\", Text.Clean, type text}}),",
-                "    #\"Trimmed Text\" = Table.TransformColumns(#\"Cleaned Text\",{{\"Column1.1.1.1.1.2\", Text.Trim, type text}}),",
-                "    #\"Capitalized Each Word\" = Table.TransformColumns(#\"Trimmed Text\",{{\"Column1.1.1.1.1.2\", Text.Proper, type text}}),",
-                "    #\"Replaced Value2\" = Table.ReplaceValue(#\"Capitalized Each Word\",\"Ma Devaraj: Name \",\"Ma Devaraj\",Replacer.ReplaceText,{\"Column1.1.1.2\"}),",
-                "    #\"Reordered Columns\" = Table.ReorderColumns(#\"Replaced Value2\",{\"Column1.1.1.2\", \"Column1.1.1.1.1.2\", \"Column1.1.1.1.1.1\", \"Column1.1.1.1.2\",   \"Column1.1.2\", \"Column1.2\"}),",
-                "    ReplacedSuresh = Table.ReplaceValue(#\"Reordered Columns\",\"Madhu N ReddyðŸ˜ƒ\",\"Suresh\",Replacer.ReplaceText,{\"Column1.1.1.2\"}),",
-                "    RemovedMaInitials = Table.ReplaceValue(ReplacedSuresh,\"Ma \",\"\",Replacer.ReplaceText,{\"Column1.1.1.2\"}),",
-                "    #\"Removed Columns\" = Table.RemoveColumns(RemovedMaInitials,{\"Column1.2\"}),",
-                "    #\"Filled Down1\" = Table.FillDown(#\"Removed Columns\",{\"Column1.1.1.2\"}),",
-                "    #\"Replaced Value5\" = Table.ReplaceValue(#\"Filled Down1\",\"\",null,Replacer.ReplaceValue,{\"Column1.1.1.2\"}),",
-                "    #\"Trimmed Text1\" = Table.TransformColumns(#\"Replaced Value5\",{{\"Column1.1.2\", Text.Trim, type text}}),",
-                "    #\"Cleaned Text1\" = Table.TransformColumns(#\"Trimmed Text1\",{{\"Column1.1.2\", Text.Clean, type text}}),",
-                "    #\"Filled Down2\" = Table.FillDown(#\"Cleaned Text1\",{\"Column1.1.2\"}),",
-                "    #\"Reordered Columns1\" = Table.ReorderColumns(#\"Filled Down2\",{\"Column1.1.1.1.1.1\", \"Column1.1.1.1.2\", \"Column1.1.1.2\", \"Column1.1.2\", \"Column1.1.1.1.1.2\"}),",
-                "    #\"===DynamicCols====\" = #\"Reordered Columns1\",",
-                "    Custom1 = Table.ColumnNames(#\"===DynamicCols====\"),",
-                "    #\"Converted to Table\" = Table.FromList(Custom1, Splitter.SplitByNothing(), null, null, ExtraValues.Error),",
-                "    #\"Added Conditional Column\" = Table.AddColumn(#\"Converted to Table\", \"Custom\", each if [Column1] = \"Column1.1.1.1.1.1\" then \"Date\" else if [Column1] = \"Column1.1.1.1.2\" then \"Time\" else if [Column1] = \"Column1.1.1.2\" then \"SalesRep\" else if [Column1] = \"Column1.1.2\" then \"ReportType\" else if [Column1] = \"Column1.1.1.1.1.2\" then \"Calls\" else null, type text),",
-                "    #\"Transposed Table\" = Table.Transpose(#\"Added Conditional Column\"),",
-                "    ColList = Table.ToColumns(#\"Transposed Table\"),",
-                "    #\"===End==========\" = ColList,",
-                "    RenamedColumns = Table.RenameColumns(#\"===DynamicCols====\",#\"===End==========\"),",
-                "    #\"Replaced Value6\" = Table.ReplaceValue(RenamedColumns,\"End of the day calls\",\"EOD\",Replacer.ReplaceText,{\"ReportType\"}),",
-                "    #\"Replaced Value7\" = Table.ReplaceValue(#\"Replaced Value6\",\"Day end calls\",\"EOD\",Replacer.ReplaceText,{\"ReportType\"}),",
-                "    #\"Replaced Value8\" = Table.ReplaceValue(#\"Replaced Value7\",\"End of the calls\",\"EOD\",Replacer.ReplaceText,{\"ReportType\"}),",
-                "    #\"Replaced Value9\" = Table.ReplaceValue(#\"Replaced Value8\",\"Yesterdays day end calls\",\"EODY\",Replacer.ReplaceText,{\"ReportType\"}),",
-                "    #\"Replaced Value10\" = Table.ReplaceValue(#\"Replaced Value9\",\"Eod cals\",\"EOD\",Replacer.ReplaceText,{\"ReportType\"}),",
-                "    #\"Replaced Value11\" = Table.ReplaceValue(#\"Replaced Value10\",\"Eod calls\",\"EOD\",Replacer.ReplaceText,{\"ReportType\"}),",
-                "    #\"Replaced Value12\" = Table.ReplaceValue(#\"Replaced Value11\",\"EOD calls\",\"EOD\",Replacer.ReplaceText,{\"ReportType\"}),",
-                "    #\"Replaced Value13\" = Table.ReplaceValue(#\"Replaced Value12\",\"EOD Calls\",\"EOD\",Replacer.ReplaceText,{\"ReportType\"}),",
-                "    #\"Replaced Value14\" = Table.ReplaceValue(#\"Replaced Value13\",\"Yesterday's EOD\",\"EODY\",Replacer.ReplaceText,{\"ReportType\"}),",
-                "    #\"Replaced Value15\" = Table.ReplaceValue(#\"Replaced Value14\",\"Today's plan\",\"TP\",Replacer.ReplaceText,{\"ReportType\"}),",
-                "    #\"Replaced Value16\" = Table.ReplaceValue(#\"Replaced Value15\",\"Good morning sir Today work plan\",\"TP\",Replacer.ReplaceText,{\"ReportType\"}),",
-                "    #\"Replaced Value17\" = Table.ReplaceValue(#\"Replaced Value16\",\"Today work plan is\",\"TP\",Replacer.ReplaceText,{\"ReportType\"}),",
-                "    #\"Replaced Value18\" = Table.ReplaceValue(#\"Replaced Value17\",\"Todays plan\",\"TP\",Replacer.ReplaceText,{\"ReportType\"}),",
-                "    #\"Replaced Value19\" = Table.ReplaceValue(#\"Replaced Value18\",\"Good morning sir today work plan\",\"TP\",Replacer.ReplaceText,{\"ReportType\"}),",
-                "    #\"Replaced Value20\" = Table.ReplaceValue(#\"Replaced Value19\",\"Today work plan\",\"TP\",Replacer.ReplaceText,{\"ReportType\"}),",
-                "    #\"Replaced Value21\" = Table.ReplaceValue(#\"Replaced Value20\",\"Good morning today work plan\",\"TP\",Replacer.ReplaceText,{\"ReportType\"}),",
-                "    #\"Replaced Value22\" = Table.ReplaceValue(#\"Replaced Value21\",\"today work plan\",\"TP\",Replacer.ReplaceText,{\"ReportType\"}),",
-                "    #\"Replaced Value23\" = Table.ReplaceValue(#\"Replaced Value22\",\"Today's calls\",\"TP\",Replacer.ReplaceText,{\"ReportType\"}),",
-                "    #\"Replaced Value24\" = Table.ReplaceValue(#\"Replaced Value23\",\"EOD with Govinda\",\"EOD\",Replacer.ReplaceText,{\"ReportType\"}),",
-                "    #\"Replaced Value25\" = Table.ReplaceValue(#\"Replaced Value24\",\"EOD call\",\"EOD\",Replacer.ReplaceText,{\"ReportType\"}),",
-                "    #\"Replaced Value26\" = Table.ReplaceValue(#\"Replaced Value25\",\"End if the day calls\",\"EOD\",Replacer.ReplaceText,{\"ReportType\"}),",
-                "    #\"Replaced Value27\" = Table.ReplaceValue(#\"Replaced Value26\",\"Good evening EOD\",\"EOD\",Replacer.ReplaceText,{\"ReportType\"}),",
-                "    #\"Replaced Value28\" = Table.ReplaceValue(#\"Replaced Value27\",\"Day end plan\",\"EOD\",Replacer.ReplaceText,{\"ReportType\"}),",
-                "    #\"Replaced Value29\" = Table.ReplaceValue(#\"Replaced Value28\",\"Today plan\",\"TP\",Replacer.ReplaceText,{\"ReportType\"}),",
-                "    #\"Replaced Value30\" = Table.ReplaceValue(#\"Replaced Value29\",\"Yesterday end of the day calls\",\"EODY\",Replacer.ReplaceText,{\"ReportType\"}),",
-                "    #\"Replaced Value31\" = Table.ReplaceValue(#\"Replaced Value30\",\"Good morning sir today work\",\"TP\",Replacer.ReplaceText,{\"ReportType\"}),",
-                "    #\"Filtered Rows\" = Table.SelectRows(#\"Replaced Value31\", each [Calls] <> \"4 Pg Drs\" and [Calls] <> \"Cells 6\"),",
-                "    #\"Filled Down3\" = Table.FillDown(#\"Filtered Rows\",{\"Time\"}),",
-                "    #\"Uppercased Text\" = Table.TransformColumns(#\"Filled Down3\",{{\"ReportType\", Text.Upper, type text}}),",
-                "    #\"Filtered Rows1\" = Table.SelectRows(#\"Uppercased Text\", each ([Calls] <> null)),",
-                "    #\"Replaced Value34\" = Table.ReplaceValue(#\"Filtered Rows1\",\"YEOD\",\"EODY\",Replacer.ReplaceText,{\"ReportType\"}),",
-                "    #\"Grouped Rows\" = Table.Group(#\"Replaced Value34\", {\"Date\", \"Time\", \"SalesRep\", \"ReportType\"}, {{\"Count\", each _, type table [Date=nullable date, Time=nullable time, HQ=nullable text, Report=nullable text, Calls=text]}}),",
-                "    #\"Filtered Rows3\" = Table.SelectRows(#\"Grouped Rows\", each ([ReportType] = \"EOD\" or [ReportType] = \"EODY\" or [ReportType] = \"TP\")),",
-                "    #\"Sorted Rows\" = Table.Sort(#\"Filtered Rows3\",{{\"ReportType\", Order.Ascending}, {\"Date\", Order.Ascending}}),",
-                "    #\"Expanded Count\" = Table.ExpandTableColumn(#\"Sorted Rows\", \"Count\", {\"Calls\"}, {\"Count.Calls\"}),",
-                "    #\"Renamed Columns1\" = Table.RenameColumns(#\"Expanded Count\",{{\"Count.Calls\", \"Calls\"}}),",
-                "    #\"Replaced Value32\" = Table.ReplaceValue(#\"Renamed Columns1\",\"R.\",\" \",Replacer.ReplaceText,{\"Calls\"}),",
-                "    #\"Filtered Rows4\" = Table.SelectRows(#\"Replaced Value32\", each ([Calls] <> null and [Calls] <> \"\") and ([SalesRep] <> \"Amith\")),",
-                "    #\"Trimmed Text2\" = Table.TransformColumns(#\"Filtered Rows4\",{{\"Calls\", Text.Trim, type text}}),",
-                "    #\"Merged Queries\" = Table.FuzzyNestedJoin(#\"Trimmed Text2\", {\"SalesRep\"}, HQ, {\"SalesRep\"}, \"HQ\", JoinKind.LeftOuter, [IgnoreCase=true, IgnoreSpace=true]),",
-                "    #\"Expanded HQ\" = Table.ExpandTableColumn(#\"Merged Queries\", \"HQ\", {\"HQ\", \"HqKey\", \"HqID\"}, {\"HQ\", \"HqKey\", \"HqID\"}),",
-                "    #\"Reordered Columns2\" = Table.ReorderColumns(#\"Expanded HQ\",{\"Date\", \"ReportType\", \"SalesRep\", \"HQ\", \"HqKey\", \"HqID\", \"Time\", \"Calls\"}),",
-                "    #\"Filtered Rows2\" = Table.SelectRows(#\"Reordered Columns2\", each [Calls] <> \"\")",
-                "in",
-                "    #\"Filtered Rows2\""
-              ],
-              "type": "m"
             }
           }
         ]
@@ -1725,87 +1577,6 @@
         "showAsVariationsOnly": true
       },
       {
-        "name": "HQ",
-        "annotations": [
-          {
-            "name": "PBI_ResultType",
-            "value": "Table"
-          }
-        ],
-        "columns": [
-          {
-            "name": "SalesRep",
-            "annotations": [
-              {
-                "name": "SummarizationSetBy",
-                "value": "Automatic"
-              }
-            ],
-            "dataType": "string",
-            "lineageTag": "586925f8-8fbc-4bec-8a29-68d0becccf88",
-            "sourceColumn": "SalesRep",
-            "summarizeBy": "none"
-          },
-          {
-            "name": "HQ",
-            "annotations": [
-              {
-                "name": "SummarizationSetBy",
-                "value": "Automatic"
-              }
-            ],
-            "dataType": "string",
-            "lineageTag": "f81dc3d3-129f-4e95-827b-195a5ba02086",
-            "sourceColumn": "HQ",
-            "summarizeBy": "none"
-          },
-          {
-            "name": "HqKey",
-            "annotations": [
-              {
-                "name": "SummarizationSetBy",
-                "value": "Automatic"
-              }
-            ],
-            "dataType": "int64",
-            "formatString": "0",
-            "lineageTag": "3c55b56a-98a3-4139-8ded-94bbfda63461",
-            "sourceColumn": "HqKey",
-            "summarizeBy": "none"
-          },
-          {
-            "name": "HqID",
-            "annotations": [
-              {
-                "name": "SummarizationSetBy",
-                "value": "Automatic"
-              }
-            ],
-            "dataType": "string",
-            "lineageTag": "ba4983da-458a-4124-83e9-30c536ce01aa",
-            "sourceColumn": "HqID",
-            "summarizeBy": "none"
-          }
-        ],
-        "lineageTag": "a87a6e39-a9e3-42ae-8b69-d0b880b169e4",
-        "partitions": [
-          {
-            "name": "HQ-c3db0737-366c-4b7a-928f-41a0ea018017",
-            "mode": "import",
-            "source": {
-              "expression": [
-                "let",
-                "    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText(\"TY9LDoMwDESvgrLuIua7Hikon0KQEoKEEPe/Rg0uVVe2n0cz9nGouRiDhFDUSznEMiOuroqwSExIKGlS54vFiKFEsCCNxuzXMqdq2lfuaplI17c0lzRmx8xH4xMew0YI6eZWBftzei8J7G8xgadWCOn2GwxcZk/tpCfd3Wu7bGzKjB9B8E9YL4R0L2GMzShXZee3P+UgiPSgzvMD\", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [SalesRep = _t, HQ = _t, HqKey = _t, HqID = _t]),",
-                "    #\"Changed Type\" = Table.TransformColumnTypes(Source,{{\"HqKey\", Int64.Type}})",
-                "in",
-                "    #\"Changed Type\""
-              ],
-              "type": "m"
-            }
-          }
-        ]
-      },
-      {
         "name": "All_measures",
         "annotations": [
           {
@@ -1836,6 +1607,35 @@
             ],
             "expression": "DIVIDE(COUNTA('WhatsApp Chat'[Calls]), DISTINCTCOUNT('WhatsApp Chat'[Date]))",
             "lineageTag": "68db2d55-f22a-4290-b854-77dd9810356a"
+          },
+          {
+            "name": "CalendarDays",
+            "expression": "CALCULATE(COUNTROWS('Calendar'), NOT('Calendar'[WeekdayNum]==0))",
+            "formatString": "0",
+            "lineageTag": "89ac2a9c-eaca-4196-8bb0-ea5ccbe0cda3"
+          },
+          {
+            "name": "EodyCount",
+            "expression": "CALCULATE(DISTINCTCOUNT('WhatsApp Chat'[ReportType]), 'WhatsApp Chat'[ReportType]==\"EODY\")",
+            "formatString": "0",
+            "lineageTag": "317f25f3-85d8-424c-9208-92cfc956c9f9"
+          },
+          {
+            "name": "FW Days",
+            "expression": "DISTINCTCOUNT('WhatsApp Chat'[Date])",
+            "formatString": "0",
+            "lineageTag": "e6cc78f9-c989-4ff0-8403-93a078246042"
+          },
+          {
+            "name": "Holiday",
+            "expression": "CALCULATE(COUNTROWS('Calendar'), Holidays[Date])",
+            "lineageTag": "96aa21c9-b7be-4c0a-840d-ce89ad51f0d6"
+          },
+          {
+            "name": "Leaves",
+            "expression": "([CalendarDays] - [Holiday] - [EodyCount]) - [FW Days]",
+            "formatString": "0",
+            "lineageTag": "9e8cf9d8-5c53-4400-8556-f457efc76758"
           }
         ],
         "partitions": [
@@ -1925,6 +1725,274 @@
                 "let",
                 "    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText(\"i45WMjCwMjBQ0lEysITQrolFOZXOiTk5xUqxOtFgYUOgsKERRNo3vygvMy8doQAkAVZgClHgmFaSWuSXn5+HpMQUqgRmRVkqmhlQS4yMrUwtgbRPYkkqqqJYAA==\", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Low = _t, High = _t, #\"Day Segentation\" = _t]),",
                 "    #\"Changed Type\" = Table.TransformColumnTypes(Source,{{\"Low\", type time}, {\"High\", type time}, {\"Day Segentation\", type text}})",
+                "in",
+                "    #\"Changed Type\""
+              ],
+              "type": "m"
+            }
+          }
+        ]
+      },
+      {
+        "name": "WhatsApp Chat",
+        "annotations": [
+          {
+            "name": "PBI_NavigationStepName",
+            "value": "Navigation"
+          },
+          {
+            "name": "PBI_ResultType",
+            "value": "Table"
+          }
+        ],
+        "columns": [
+          {
+            "name": "ReportType",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "460e6dff-e49a-4ed3-9cd3-5d7dfb6afeff",
+            "sourceColumn": "ReportType",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "HqKey",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "a67a0f20-6670-41b9-a314-82a35dcd0aa5",
+            "sourceColumn": "HqKey",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Representative",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "04eb6052-ed11-4527-b486-d65ae28d696d",
+            "sourceColumn": "Representative",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Date",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              },
+              {
+                "name": "UnderlyingDateTimeDataType",
+                "value": "Date"
+              }
+            ],
+            "dataType": "dateTime",
+            "formatString": "Long Date",
+            "lineageTag": "945de2d9-43cc-4b41-b25d-62e6c3380e5d",
+            "sourceColumn": "Date",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Time",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              },
+              {
+                "name": "UnderlyingDateTimeDataType",
+                "value": "Time"
+              }
+            ],
+            "dataType": "dateTime",
+            "formatString": "Long Time",
+            "lineageTag": "61eaef54-1715-4a24-9b99-c34141a117cb",
+            "sourceColumn": "Time",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Calls",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "8b71e322-bf4e-47d7-aea2-4d64996df100",
+            "sourceColumn": "Calls",
+            "summarizeBy": "none"
+          }
+        ],
+        "lineageTag": "e22f58eb-0ba7-452c-aba4-acc0bae421b2",
+        "partitions": [
+          {
+            "name": "WhatsApp Chat",
+            "mode": "import",
+            "source": {
+              "expression": [
+                "let",
+                "    Source = fDataClean()",
+                "in",
+                "    Source"
+              ],
+              "type": "m"
+            }
+          }
+        ]
+      },
+      {
+        "name": "HQ",
+        "annotations": [
+          {
+            "name": "PBI_NavigationStepName",
+            "value": "Navigation"
+          },
+          {
+            "name": "PBI_ResultType",
+            "value": "Table"
+          }
+        ],
+        "columns": [
+          {
+            "name": "Representative",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "6913f343-6128-420f-94c6-8ad40f6eb065",
+            "sourceColumn": "Representative",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "HQ",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "4088704d-9e53-4533-8841-2dfffa5e9ea0",
+            "sourceColumn": "HQ",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "HqKey",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "7f2cf010-2c64-45c5-8921-1485875f774c",
+            "sourceColumn": "HqKey",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "HqID",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "bab73b4c-d0dc-4c51-95e7-46acfcba7715",
+            "sourceColumn": "HqID",
+            "summarizeBy": "none"
+          }
+        ],
+        "lineageTag": "12c21dd2-cc56-4186-a63c-2bbbc73deda3",
+        "partitions": [
+          {
+            "name": "HQ",
+            "mode": "import",
+            "source": {
+              "expression": [
+                "let",
+                "    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText(\"TZBNDoQgDEavYljPJNR/l01KQEcxQTExxvtfY4odJ64or4+vwHGoKRJhwCGql3Lo44R+dZlHi4EJCAUN6nyxjH6IHlkIhmhPzSVk475ylcsOdH6pSwxmccx6T33AO7AQArq4rMH+kz5zQM63OCLvSiGgy99gxBR2r5XUoKurbeeNQ5nxQ3Do72G1ENC1DGNMRm61uH57mI0g0I1cPnX5JFPa7Dv9Qis16PYyyDyF9PbuFjp1nl8=\", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Representative = _t, HQ = _t, HqKey = _t, HqID = _t]),",
+                "    #\"Changed Type\" = Table.TransformColumnTypes(Source,{{\"HqKey\", Int64.Type}})",
+                "in",
+                "    #\"Changed Type\""
+              ],
+              "type": "m"
+            }
+          }
+        ]
+      },
+      {
+        "name": "Holidays",
+        "annotations": [
+          {
+            "name": "PBI_NavigationStepName",
+            "value": "Navigation"
+          },
+          {
+            "name": "PBI_ResultType",
+            "value": "Table"
+          }
+        ],
+        "columns": [
+          {
+            "name": "Date",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              },
+              {
+                "name": "UnderlyingDateTimeDataType",
+                "value": "Date"
+              }
+            ],
+            "dataType": "dateTime",
+            "formatString": "Long Date",
+            "lineageTag": "0c7aa990-a71f-41c3-b2d0-d6c7cd91c294",
+            "sourceColumn": "Date",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Occasion",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "39012f7a-46c8-4cc3-9928-fb7424719c14",
+            "sourceColumn": "Occasion",
+            "summarizeBy": "none"
+          }
+        ],
+        "lineageTag": "71c11b40-134d-4bcd-9867-fad4a9cd2a12",
+        "partitions": [
+          {
+            "name": "Holidays",
+            "mode": "import",
+            "source": {
+              "expression": [
+                "let",
+                "    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText(\"i45WMjDRNTDTNTIwMlLSUfJNTS3JzEtXio0FAA==\", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Date = _t, Occasion = _t]),",
+                "    #\"Changed Type\" = Table.TransformColumnTypes(Source,{{\"Date\", type date}, {\"Occasion\", type text}})",
                 "in",
                 "    #\"Changed Type\""
               ],
